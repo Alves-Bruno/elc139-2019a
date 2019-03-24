@@ -1,5 +1,5 @@
-Nome: Bruno da Silva Alves
-Nome da disciplina: Programação Paralela elc139-2019a
+* Nome: Bruno da Silva Alves.
+* Nome da disciplina: Programação Paralela elc139-2019a
 
 ## Parte I: Pthreads
 
@@ -147,18 +147,14 @@ void *dotprod_worker(void *arg)
 
 ##### 4. Elabore um gráfico/tabela de aceleração a partir dos dados obtidos no exercício anterior.
 
-![](pthreads_dotprod/1_mil/graph.png)
-**Figura 1 = Speed Up com vetor de tamanho 1.000**
-![](pthreads_dotprod/10_mil/graph.png)
-**Figura 2 = Speed Up com vetor de tamanho 10.000**
-![](pthreads_dotprod/100_mil/graph.png)
-**Figura 3 = Speed Up com vetor de tamanho 100.000**
-![](pthreads_dotprod/1_milhao/graph.png)
-**Figura 4 = Speed Up com vetor de tamanho 1.000.000**
+![1_mil](pthreads_dotprod/1_mil/graph.png)
+![10_mil](pthreads_dotprod/10_mil/graph.png)
+![100_mil](pthreads_dotprod/100_mil/graph.png)
+![1_milhao](pthreads_dotprod/1_milhao/graph.png)
 
 ##### 5. Explique as diferenças entre [pthreads_dotprod.c](pthreads_dotprod/pthreads_dotprod.c) e [pthreads_dotprod2.c](pthreads_dotprod/pthreads_dotprod2.c). Com as linhas removidas, o programa está correto?
 
- - A diferença entre pthreads_dotprod.c e o pthreads_dotprod2.c está no uso do mutex na fase de aglomeração do resultado. 
+ - A diferença entre pthreads_dotprod.c e o pthreads_dotprod2.c está no uso do mutex na fase de aglomeração do resultado.
 
 
 
