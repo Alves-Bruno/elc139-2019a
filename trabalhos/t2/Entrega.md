@@ -245,13 +245,13 @@ int main(int argc, char **argv){
 ```
 ##### 2. Avalie o desempenho do programa em OpenMP, usando os mesmos dados/argumentos do programa com threads POSIX.
 
-  - Quando comparamos o tempo médio para execução do programa com Pthread e com OpenMP, é possível perceber que em geral o tempo para a execução do programa com o OpemMP é menor do que com a utilização do Pthread. O gráfico abaixo mostra que a diferença de tempo é mais significativa nos casos com os menores vetores. A medida que aumentamos o tamanho do vetor, a diferença do tempo de execuções entre as duas bibliotecas é menos perceptível.
+  - Quando comparamos o tempo médio para execução do programa com Pthread e com OpenMP, é possível perceber que em geral o tempo para a execução do programa com o OpemMP é menor do que com a utilização do Pthread. O [gráfico](graph_maior.png) abaixo mostra que a diferença de tempo é mais significativa nos casos com os menores vetores. A medida que aumentamos o tamanho do vetor, a diferença do tempo de execuções entre as duas bibliotecas é menos perceptível.
 
 ![media](graph_maior.png)
 
   - Com a relação ao speedup, o uso da biblioteca Pthreads mostrou maiores ganhos para os casos com o vetor de tamanho 1.000 e 10.000. Para os casos com os vetores com tamanho igual a 100.000 a aceleração das duas bibliotecas são bem semelhantes. E com os vetores com tamanho de 1.000.000, o OpenMP mostra valores de speedup levemente melhores do que os valores da biblioteca Pthread.
 
-|  Tamanho Vetor | Pthreads | OpenMP  |  |
+|  Tamanho Vetor | Pthreads | OpenMP  |
 |---|---|---|
 |  1.000 |  ![1_mil](pthreads_dotprod/1_mil/graph.png) | ![1_mil](openmp/1_mil/graph.png)  |
 |  10.000 | ![10_mil](pthreads_dotprod/10_mil/graph.png)  |  ![10_mil](openmp/10_mil/graph.png) |   
