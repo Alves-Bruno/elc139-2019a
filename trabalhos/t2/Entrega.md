@@ -1,5 +1,9 @@
 * Nome: Bruno da Silva Alves.
 * Nome da disciplina: Programação Paralela elc139-2019a
+--------
+* [Especificações do hardware](specs.txt)
+* [Tabela de Resultados](results.csv)
+-------------
 
 ## Parte I: Pthreads
 
