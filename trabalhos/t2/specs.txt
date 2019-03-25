@@ -1,0 +1,6 @@
+Dell Inspiron 15R (7520)
+2 Cores com 2 threads por cores
+Intel(R) Core(TM) i5-3230M (Intel Core IvyBridge processor)
+Freq. Proc. = ~3.00GHz
+Memória = 7852.04 MB (Cache L1: 2x 32kB, Cache L2: 2x 256kB, Cache L3: 1x 3MB)
+Ubuntu 18.04.1 LTS

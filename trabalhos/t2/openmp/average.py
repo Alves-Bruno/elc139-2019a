@@ -1,6 +1,8 @@
 import csv
 import sys
 
+print('tool,nthreads,size,repetitions,usec')
+
 with open(sys.argv[1]) as csvfile:
 	readCSV = csv.reader(csvfile, delimiter=',')
 
@@ -12,13 +14,12 @@ with open(sys.argv[1]) as csvfile:
 
 	#print(readCSV[0])
 	#sum = 0
-	N_20 = 0
-	avg_1_thread = 0
 	for i in range(1, 441, 22):
 		sum = 0
 		#print(linhas[i], end=', ');
 		info = (linhas[i][0]).split(' ')
-		print(info[1] + ' ' + info[2] + ' ' + info[3], end=', ')
+		print('openMP,' + info[1] + ',' + info[2] + ',' + info[3], end=',')
+		#print(linhas[i][0][19:], end=', ')
 		#for num in range(19, 32):
 		#	print(linhas[i][0][num])
 		lin = i
@@ -28,13 +29,4 @@ with open(sys.argv[1]) as csvfile:
 			#print(only_num[1])
 			sum = sum + float(only_num[1])
 
-		#print(sum/20)
-		if N_20 == 0:
-			avg_1_thread = sum/20
-
-		N_20 = N_20 + 1
-		if N_20 == 4:
-			N_20 = 0
-
-		print(avg_1_thread / (sum/20))
-		#print((i - 1) % 20)
+		print(sum/20)

@@ -1,0 +1,4 @@
+# Aceleração
+Speedup (p) = Tseq/Tpar(p)
+
+Eficiencia (p) = Speedup (p) / p

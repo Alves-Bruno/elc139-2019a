@@ -2,3 +2,12 @@ python ../exec.py ../pthreads_dotprod resultado.csv 1000
 python3 ../average.py resultado.csv >> result_avg.csv
 python3 ../speed_up.py resultado.csv >> result_speedup.csv
 python ../generate_graph.py result_speedup.csv "SPEED UP com vetor de tamanho 1000" "SPEED UP"
+
+
+mkdir 1_mil 
+cd 1_mil
+python ../exec.py ../ompsimple resultado.csv 1000
+python3 ../average.py resultado.csv >> result_avg.csv
+python3 ../speed_up.py resultado.csv >> result_speedup.csv
+python ../generate_graph.py result_speedup.csv "SPEED UP com vetor de tamanho 1.000 - OpenMP" "SPEED UP"
+cd ..

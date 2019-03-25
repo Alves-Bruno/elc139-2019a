@@ -1,6 +1,9 @@
 import csv
 import sys
 
+
+print('tool,nthreads,size,repetitions,usec')
+
 with open(sys.argv[1]) as csvfile:
 	readCSV = csv.reader(csvfile, delimiter=',')
 
@@ -15,7 +18,8 @@ with open(sys.argv[1]) as csvfile:
 	for i in range(1, 441, 22):
 		sum = 0
 		#print(linhas[i], end=', ');
-		print(linhas[i][0][19:], end=', ')
+		info = (linhas[i][0]).split(' ')
+		print('Pthreads,' + info[1] + ',' + info[2] + ',' + info[3], end=',')
 		#for num in range(19, 32):
 		#	print(linhas[i][0][num])
 		lin = i
