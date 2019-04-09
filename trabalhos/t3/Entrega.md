@@ -4,6 +4,7 @@
 
 **Programa desenvolvido:** [OpenMPDemoABC](OpenMPDemoABC.cpp).
 
+**Referência:** https://computing.llnl.gov/tutorials/openMP/#Introduction
 
 -------------------
 ### Exemplo de saída do programa, com explicação dos casos de teste:
