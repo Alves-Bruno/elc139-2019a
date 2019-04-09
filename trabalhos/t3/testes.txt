@@ -1,0 +1,198 @@
+#pragma omp parallel for schedule (static)
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAA
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAA
+A=20 B=20 C=20
+```
+
+#pragma omp parallel for schedule (static, chunk)
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAA
+A=20 B=20 C=20
+```
+```
+Case : using OpenMP (expecting correct results)
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB
+A=40 B=20 C=0
+```
+
+```
+Case : using OpenMP (expecting correct results)
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+A=60 B=0 C=0
+```
+
+#pragma omp parallel for schedule (dynamic)
+```
+Case : using OpenMP (expecting correct results)
+BCBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAC
+A=1 B=57 C=2
+```
+
+```
+Case : using OpenMP (expecting correct results)
+BCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCAB
+A=1 B=2 C=57
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCBA
+A=2 B=1 C=57
+```
+
+#pragma omp parallel for schedule (dynamic, chunk)
+```
+Case : using OpenMP (expecting correct results)
+CAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCCCCCCCCCBBBBBBBBBBBBBBBBBBBB
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB
+A=40 B=20 C=0
+```
+
+```
+Case : using OpenMP (expecting correct results)
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+A=0 B=0 C=60
+```
+
+#pragma omp parallel for schedule (guided)
+```
+Case : using OpenMP (expecting correct results)
+ABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCAAAAAAAAAAAAAAAAAAA
+A=20 B=31 C=9
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBB
+A=20 B=14 C=26
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBB
+A=20 B=14 C=26
+```
+
+#pragma omp parallel for schedule (guided, chunk)
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+BCCCCCCCCCCCCCCCCCCCCBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAA
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ABACCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBB
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAA
+A=20 B=40 C=0
+```
+
+```
+Case : using OpenMP (expecting correct results)
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+A=0 B=60 C=0
+```
+
+#pragma omp parallel for schedule (runtime)
+```
+Case : using OpenMP (expecting correct results)
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+A=0 B=60 C=0
+```
+
+```
+Case : using OpenMP (expecting correct results)
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+A=60 B=0 C=0
+```
+
+```
+Case : using OpenMP (expecting correct results)
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+A=60 B=0 C=0
+```
+
+#pragma omp parallel for schedule (auto)
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAA
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAA
+A=20 B=20 C=20
+```
+
+```
+Case : using OpenMP (expecting correct results)
+ACCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB
+A=20 B=20 C=20
+```
+
+CASO 6
+
+STATIC:
+```
+Case : using OpenMP (expecting incorrect results)
+CBACBACBCABABACBACBACBACBACBACBABCABCABCABCABCABABCABCA-C-CC
+A=19 B=19 C=20
+```
+
+DYNAMIC:
+```
+Case : using OpenMP (expecting incorrect results)
+CBACBACACBCABCABCBCBACBACBACACABCABCBCABCABCABCABCABCABCAB--
+A=18 B=19 C=21
+```
+
+AUTO:
+```
+Case : using OpenMP (expecting correct results)
+CABBACBCBCABCBACABCBACBCBCABCABCABCABCABCABCBACBACBAC-ACA-AA
+A=19 B=19 C=20
+```
