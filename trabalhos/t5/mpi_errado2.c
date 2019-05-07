@@ -2,9 +2,9 @@
 //  Este programa MPI tem um erro!
 //  Identifique este erro e corrija-o para que 2 processos
 //  troquem mensagens corretamente.
-//  
+//
 //  Uso: mpirun -np 2 <prog>
-//  
+//
 #include "mpi.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,4 +40,5 @@ int main(int argc,char *argv[])
       printf("Enviei mensagem para processo %d...\n", dest);
    }
 
+   MPI_Finalize();
 }

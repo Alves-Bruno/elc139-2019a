@@ -21,25 +21,28 @@ int main(int argc,char *argv[])
    MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-   printf("Processo %d iniciando...\n",rank);
-
    if (rank == 0) {
       dest = 1;
       source = dest;
-      // tag = rank;
+      outmsg++;
       rc = MPI_Send(&outmsg, 1, MPI_INT, dest, tag, MPI_COMM_WORLD);
-      printf("Enviei mensagem para processo %d...\n", dest);
-      rc = MPI_Recv(&inmsg, 1, MPI_INT, source, tag, MPI_COMM_WORLD, &stat);
-      printf("Recebi mensagem do processo %d...\n", source);
+      printf("[%d] enviou mensagem para processo [%d]...\n", rank, dest);
+
    }
-   else if (rank == 1) {
-      dest = 0;
-      source = dest;
-      // tag = rank;
+   else if(rank != 0 && rank < numtasks - 1) {
+      dest = rank + 1;
+      source = rank - 1;
       rc = MPI_Recv(&inmsg, 1, MPI_INT, source, tag, MPI_COMM_WORLD, &stat);
-      printf("Recebi mensagem do processo %d...\n", source);
+      printf("[%d] recebeu mensagem do processo [%d]...\n", rank, source);
+      outmsg = inmsg + 1;
       rc = MPI_Send(&outmsg, 1, MPI_INT, dest, tag, MPI_COMM_WORLD);
-      printf("Enviei mensagem para processo %d...\n", dest);
+      printf("[%d] enviou mensagem para processo [%d]...\n", rank, dest);
+   }
+   else{
+           source = rank - 1;
+           rc = MPI_Recv(&inmsg, 1, MPI_INT, source, tag, MPI_COMM_WORLD, &stat);
+           printf("[%d] recebeu mensagem do processo [%d]. Valor final: %d\n", rank, source, inmsg);
+
    }
 
    MPI_Finalize();
