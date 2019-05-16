@@ -56,22 +56,14 @@ int main(int argc, char *argv[])
     fill_matrix(B);
   }
 
-
-  if (myrank == 0){
-    for (int i = 1; i < nproc; ++i){
-      int lFrom = i * SIZE/nproc;
-      int lTo = (i+1) * SIZE/nproc;
-      //printf("slice log: %d, %d\n", lFrom, lTo);
-      // Broadcast B to other process
-      MPI_Send(B, SIZE*SIZE, MPI_INT, i, tag_A, MPI_COMM_WORLD);
-      // Send "Total of lines" / "Number of process" lines to other process
-      MPI_Send(A[lFrom], (lTo - lFrom) * SIZE, MPI_INT, i, tag_B, MPI_COMM_WORLD);
-    }
-  } else {
-    MPI_Recv(B, SIZE*SIZE, MPI_INT, MPI_ANY_SOURCE, tag_A, MPI_COMM_WORLD, &status);
-    MPI_Recv(A[from], (to - from)*SIZE, MPI_INT, MPI_ANY_SOURCE, tag_B, MPI_COMM_WORLD, &status);
-
-  }
+    // Modificações:
+    // Quando for o root=0, ele enviará a matriz B para todos os nós conectados através do Broadcast,
+    // Todos os nós receberão a matriz B enviada pelo 0.
+    MPI_Bcast(B, SIZE*SIZE, MPI_INT, 0, MPI_COMM_WORLD);
+    //Modificações:
+    // Quando for o root = 0, ele enviará a parte calculada da matriz A, como ocorria antes com o uso do FOR.
+    // Todos os nós receberão parte da matriz enviada pelo nó 0.
+    MPI_Scatter(A, (to - from)*SIZE, MPI_INT, A[from], (to - from)*SIZE, MPI_INT, 0, MPI_COMM_WORLD);
 
 
   printf("computing slice %d (from row %d to %d)\n", myrank, from, to-1);
