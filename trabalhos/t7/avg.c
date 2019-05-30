@@ -33,14 +33,14 @@ int main(int argc, char** argv) {
     fprintf(stderr, "Usage: avg num_elements_per_proc\n");
     exit(1);
   }
-  
+
   double start_time_mpi, end_time_mpi;
 
   int num_elements_per_proc = atoi(argv[1]);
   // Seed the random number generator to get different results each time
   srand(time(NULL));
 
-  MPI_Init(NULL, NULL);
+  MPI_Init(&argc, &argv);
 
   int world_rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
   float *rand_nums = NULL;
   if (world_rank == 0) {
     rand_nums = create_rand_nums(num_elements_per_proc * world_size);
-    //start_time_mpi = MPI_Wtime();
+    start_time_mpi = MPI_Wtime();
   }
 
   // For each process, create a buffer that will hold a subset of the entire
@@ -83,13 +83,13 @@ int main(int argc, char** argv) {
   // produce the correct answer.
   if (world_rank == 0) {
     float avg = compute_avg(sub_avgs, world_size);
-    //end_time_mpi = MPI_Wtime();
-    //printf("%f\n", (end_time_mpi - start_time_mpi)*1000);
-     printf("Avg of all elements is %f\n", avg);
+    end_time_mpi = MPI_Wtime();
+    printf("%f\n", (end_time_mpi - start_time_mpi)*1000);
+     // printf("Avg of all elements is %f\n", avg);
     // Compute the average across the original data for comparison
     float original_data_avg =
       compute_avg(rand_nums, num_elements_per_proc * world_size);
-     printf("Avg computed across original data is %f\n", original_data_avg);
+     // printf("Avg computed across original data is %f\n", original_data_avg);
   }
 
   // Clean up
