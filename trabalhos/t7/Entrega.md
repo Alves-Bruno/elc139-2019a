@@ -24,7 +24,6 @@ Ubuntu 18.04.1 LTS
 Gráfico das execuções (média de 50 execuções para cada tempo):
 
 ![Alt text](./parte1_graph.svg)
-<img src="./parte1_graph.svg">
 
 --------------
 
@@ -37,4 +36,3 @@ Gráfico das execuções (média de 50 execuções para cada tempo):
 Gráfico das execuções (média de 20 execuções para cada tempo):
 
 ![Alt text](./parte2_graph.svg)
-<img src="./parte2_graph.svg">
