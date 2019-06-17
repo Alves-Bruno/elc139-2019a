@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   if (width < 100) {fprintf(stderr, "error: frame_width must be at least 100\n"); exit(-1);}
   int frames = atoi(argv[2]);
   if (frames < 1) {fprintf(stderr, "error: num_frames must be at least 1\n"); exit(-1);}
-  printf("computing %d frames of %d by %d picture\n", frames, width, width);
+  // printf("computing %d frames of %d by %d picture\n", frames, width, width);
 
   // allocate picture array
   unsigned char* pic = new unsigned char[frames * width * width];
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
   // end time
   gettimeofday(&end, NULL);
   double runtime = end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
-  printf("compute time: %.4f s\n", runtime);
+  printf("%.4f\n", runtime);
 
   // verify result by writing frames to BMP files
   if ((width <= 256) && (frames <= 100)) {
