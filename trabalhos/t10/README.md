@@ -6,23 +6,21 @@
 
 ### Kernel:
 
+**Código: [Transitive.cu](mandelbrot/CUDA_transitive_closure.cu)**
+
 ```c
 __global__
 void warshall_CUDA(short int* graph, int nNodes)
-{   
-    // k é a linha da matriz
+{
     int k = threadIdx.x + blockIdx.x * blockDim.x;
-    // i é a coluna
-    int i = threadIdx.y + blockIdx.y * blockDim.y;
 
-    int nNodes2 = nNodes * nNodes;
-    // Testa se não passa dos limites da matriz
-    // Para os casos em que a divisão não é perfeita.
-    if(i < nNodes2 && k < nNodes2){
-        for (int j = 0; j < nNodes; j++){
-            if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
-                graph[i * nNodes + j] = 1;
-        }
+    for (int i = 0; i < nNodes; i++){
+      for (int j = 0; j < nNodes; j++){
+
+        if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
+          graph[i * nNodes + j] = 1;
+
+      }
     }
 
 }
@@ -32,25 +30,17 @@ void warshall_CUDA(short int* graph, int nNodes)
 
 ```c
 // Caso o número de nós seja menor que o valor máximo de threads
-if(nNodes <= devProp.maxThreadsDim[0] && nNodes <= devProp.maxThreadsDim[1]){
-    dim3 thr_per_block(nNodes, nNodes);
-    // Cria somente 1 bloco com nNodes x nNodes threads
-    warshall_CUDA<<<1, thr_per_block>>> (graph, nNodes);
-}else{
-    // Caso o número de threads for maior do que o valor máximo permitido:
+    if(nNodes <= devProp.maxThreadsDim[0]){
+        warshall_CUDA<<<1, nNodes>>> (graph, nNodes);
+    }
+// Caso geral
+    else{
+        // Calcula o número de blocos necessários:
+        float Blocks = float(nNodes) / float(devProp.maxThreadsDim[0]);
+        int iblocks = ceil(Blocks);
 
-    // Divide nNodes * nNodes pelo valor máximo permitido para a Dim0 e a Dim1
-    float Blocks = (nNodes * nNodes) / (devProp.maxThreadsDim[0] * devProp.maxThreadsDim[1]);
-    dim3 thr_per_block(devProp.maxThreadsDim[0], devProp.maxThreadsDim[1]);
-
-    // Ex.: nNodes = 5120
-    // Blocks = (5120 * 5120) / (1024 * 1024)
-    // Blocks = 25
-    // dim3 thr_per_block(1024, 1024);
-    // warshall_CUDA<<<25, (1024, 1024)>>> (graph, nNodes);
-
-    warshall_CUDA<<<ceil(Blocks), thr_per_block>>> (graph, nNodes);
-}
+        warshall_CUDA<<< iblocks, devProp.maxThreadsDim[0] >>> (graph, nNodes);
+    }
 
 ```
 
@@ -58,13 +48,15 @@ if(nNodes <= devProp.maxThreadsDim[0] && nNodes <= devProp.maxThreadsDim[1]){
 
 Para o cálculo do speedup foi feita uma média de 10 execuções do programa serial e do programa paralelo.
 
-**Speedup obtido = 257,063**
+**Speedup obtido = 4,115**
 
 Os testes foram realizados utilizando o google colab, aqui o [link](https://colab.research.google.com/drive/18oIRloO4_nLnZfdyjpsM5YIK1eGQC3rz#scrollTo=QJNYmWp08gYS) para o notebook.
 
 -----------------------
 
 # Parte 2 -> Mandelbrot em CUDA:
+
+**Código: [mandelbrot.cu](mandelbrot/CUDA_mandelbrot.cu)**
 
 ### Kernel:
 
@@ -134,3 +126,10 @@ Para o cálculo do speedup foi feita uma média de 10 execuções do programa se
 Os testes foram realizados utilizando o google colab, aqui o [link](https://colab.research.google.com/drive/18oIRloO4_nLnZfdyjpsM5YIK1eGQC3rz#scrollTo=QJNYmWp08gYS) para o notebook.
 
 OBS: Quando o max_n for um valor muito grande algumas posições da matriz de saída podem variar. Acreditamos que isso possa ocorrer devido a biblioteca <thrust/complex.h> não ser tão precisa quanto a biblioteca utilizada no código serial.
+
+--------------------------
+
+# Parte 3 -> Kmeans em MPI e OpenMP:
+
+Código: [MPI](kmeans/kmeans_mpi.c).
+Código: [OpenMP](kmeans/kmeans_omp.c).

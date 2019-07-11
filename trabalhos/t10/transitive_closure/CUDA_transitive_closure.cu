@@ -93,44 +93,19 @@ void read (){
 }
 
 
-// Para cada nó do grafo a funcão calcula
-// se existe um caminho com distância 1 até MAX
-// (MAX = núm de nós no grafo) até outro nó do grafo.
-void warshall(){
-  // #pragma omp parallel for collapse(3)
-
-// k e i percorrem cada posição da 'matriz'
-  for (int k = 0; k < nNodes; k++){
-      for (int i = 0; i < nNodes; i++){
-          for (int j = 0; j < nNodes; j++){
-            // j é a distância testada
-            // if graph[i][k] + graph[k][j] < graph[i][j]
-            //      graph[i][j] = 1;
-            if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
-                graph[i * nNodes + j] = 1;
-            }
-        }
-    }
-
-}
-
 
 __global__
-void warshall_CUDA(short int* graph, int nNodes, int resto)
+void warshall_CUDA(short int* graph, int nNodes)
 {
     int k = threadIdx.x + blockIdx.x * blockDim.x;
-    int i = threadIdx.y + blockIdx.y * blockDim.y;
 
-    for(int offset = 0; offset < resto; offset++){
-        
-    }
+    for (int i = 0; i < nNodes; i++){
+      for (int j = 0; j < nNodes; j++){
 
-    int nNodes2 = nNodes * nNodes;
-    if(i < nNodes2 && k < nNodes2){
-        for (int j = 0; j < nNodes; j++){
-            if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
-                graph[i * nNodes + j] = 1;
-        }
+        if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
+          graph[i * nNodes + j] = 1;
+
+      }
     }
 
 }
@@ -148,13 +123,13 @@ int main(int argc, char *argv[])
     cudaGetDeviceProperties(&devProp, 0);
 
 
-    if(nNodes <= devProp.maxThreadsDim[0] && nNodes <= devProp.maxThreadsDim[1]){
-        dim3 thr_per_block(nNodes, nNodes);
-        warshall_CUDA<<<1, thr_per_block>>> (graph, nNodes, 1);
+    if(nNodes <= devProp.maxThreadsDim[0]){
+        warshall_CUDA<<<1, nNodes>>> (graph, nNodes);
     }else{
-        float resto = (nNodes * nNodes) / devProp.maxThreadsDim[0] * devProp.maxThreadsPerBlock;
+        float Blocks = float(nNodes) / float(devProp.maxThreadsDim[0]);
+        int iblocks = ceil(Blocks);
 
-        warshall_CUDA<<<ceil(Blocks), thr_per_block>>> (graph, nNodes, resto);
+        warshall_CUDA<<< iblocks, devProp.maxThreadsDim[0] >>> (graph, nNodes);
     }
 
     // Wait for GPU to finish before accessing on host
