@@ -95,17 +95,30 @@ void read (){
 
 
 __global__
-void warshall_CUDA(short int* graph, int nNodes)
+void warshall_CUDA(short int* graph, int nNodes, int offset)
 {
-    int k = threadIdx.x + blockIdx.x * blockDim.x;
 
-    for (int i = 0; i < nNodes; i++){
-      for (int j = 0; j < nNodes; j++){
+    if(offset == -1){
+        int k = threadIdx.x + blockIdx.x * blockDim.x;
 
-        if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
-          graph[i * nNodes + j] = 1;
+        for (int i = 0; i < nNodes; i++){
+            for (int j = 0; j < nNodes; j++){
+                if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
+                  graph[i * nNodes + j] = 1;
+            }
+        }
+    }
+    else{
+        int i = (threadIdx.x + blockIdx.x * blockDim.x) + (offset * blockDim.x);
 
-      }
+        if(i < nNodes * nNodes){
+            int k = float(i) / float(blockDim.x);
+
+            for (int j = 0; j < nNodes; j++){
+                if(graph[i * nNodes + k] + graph[k * nNodes + j] < graph[i * nNodes + j])
+                  graph[i * nNodes + j] = 1;
+            }
+        }
     }
 
 }
@@ -124,12 +137,18 @@ int main(int argc, char *argv[])
 
 
     if(nNodes <= devProp.maxThreadsDim[0]){
-        warshall_CUDA<<<1, nNodes>>> (graph, nNodes);
+        warshall_CUDA<<<1, nNodes>>> (graph, nNodes, -1);
     }else{
-        float Blocks = float(nNodes) / float(devProp.maxThreadsDim[0]);
-        int iblocks = ceil(Blocks);
 
-        warshall_CUDA<<< iblocks, devProp.maxThreadsDim[0] >>> (graph, nNodes);
+        float Blocks = float(nNodes * nNodes) / float(devProp.maxThreadsDim[0]);
+        float Offset = Blocks / float(devProp.maxThreadsDim[0]);
+        int iblocks = ceil(Blocks);
+        int iOffset = ceil(Offset);
+
+        for(int i=0; i < iOffset; i++){
+            warshall_CUDA<<< devProp.maxThreadsDim[0], devProp.maxThreadsDim[0] >>> (graph, nNodes, i);
+        }
+
     }
 
     // Wait for GPU to finish before accessing on host
